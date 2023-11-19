@@ -1,5 +1,6 @@
 package com.example.mywhatsapp
 
+import AnimatedPausePlayIcon
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -30,9 +31,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.mywhatsapp.ui.theme.MyWhatsAppTheme
+import com.example.mywhatsapp.ui.theme.SmileFace
 import com.example.mywhatsapp.ui.theme.chats
-import com.example.mywhatsapp.ui.theme.llamadas
-import com.example.mywhatsapp.ui.theme.novedades
 import kotlinx.coroutines.launch
 
 
@@ -54,18 +54,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalAnimationGraphicsApi::class)
+
 @Composable
 fun fabHeart(){
-    val image = AnimatedImageVector.animatedVectorResource(id = R.drawable.ad_heart)
-    var atEnd by remember { mutableStateOf(false) }
+    //val image = AnimatedImageVector.animatedVectorResource(R.drawable.ad_heart)
+    //var atEnd by remember { mutableStateOf(false) }
     FloatingActionButton(
         onClick = { /*TODO*/ },
         containerColor = MaterialTheme.colorScheme.primary
     ) {
-        Icon(
-            rememberAnimatedVectorPainter(animatedImageVector = image, atEnd = atEnd),""
-        )
+        //Icon(
+        //    rememberAnimatedVectorPainter(animatedImageVector = image, atEnd = atEnd),""
+        //)
     }
 }
 
@@ -126,11 +126,11 @@ fun tabs(innerPadding: PaddingValues) {
                 )
             }
         }
-        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxWidth(),pageCont = titles.size) { page ->
-            when (page) {
+        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxWidth(),pageCount = titles.size) { page ->
+        when (page) {
                 0 -> chats()
-                1 -> novedades()
-                2 -> llamadas()
+                1 -> AnimatedPausePlayIcon()
+                2 -> SmileFace()
             }
         }
     }
