@@ -5,10 +5,15 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.graphics.ExperimentalAnimationGraphicsApi
+import androidx.compose.animation.graphics.res.animatedVectorResource
+import androidx.compose.animation.graphics.res.rememberAnimatedVectorPainter
+import androidx.compose.animation.graphics.vector.AnimatedImageVector
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -17,6 +22,7 @@ import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,23 +37,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
 import com.example.mywhatsapp.ui.theme.MyWhatsAppTheme
-import com.example.mywhatsapp.ui.theme.SmileFace
-import com.example.mywhatsapp.ui.theme.chats
 import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-    @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
                 MyWhatsAppTheme {
                         Scaffold(
                             topBar = {MyTopAppBar()},
-                            floatingActionButton = {fabHeart()}
+                            floatingActionButton = {
+                                FloatingActionButton(
+                                    onClick = { },
+                                    containerColor = Color(0xFF00695C),
+                                    elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
+                                ) {
+                                    FabHeart()
+                                }
+                            }
                         ) {
-                                innerPading -> tabs(innerPading)
+                                innerPading -> Tabs(innerPading)
                         }
                 }
         }
@@ -55,18 +67,19 @@ class MainActivity : ComponentActivity() {
 }
 
 
+@OptIn(ExperimentalAnimationGraphicsApi::class, ExperimentalAnimationGraphicsApi::class)
 @Composable
-fun fabHeart(){
-    //val image = AnimatedImageVector.animatedVectorResource(R.drawable.ad_heart)
-    //var atEnd by remember { mutableStateOf(false) }
-    FloatingActionButton(
-        onClick = { /*TODO*/ },
-        containerColor = MaterialTheme.colorScheme.primary
-    ) {
-        //Icon(
-        //    rememberAnimatedVectorPainter(animatedImageVector = image, atEnd = atEnd),""
-        //)
-    }
+fun FabHeart(){
+    val image = AnimatedImageVector.animatedVectorResource(R.drawable.ad_rotacion)
+    var atEnd by remember { mutableStateOf(false) }
+    Image(
+        painter = rememberAnimatedVectorPainter(image, atEnd),
+        contentDescription = "VectorDrawable",
+        modifier = Modifier.clickable {
+            atEnd = !atEnd
+        },
+        //contentScale = ContentScale.Crop
+    )
 }
 
 
@@ -100,9 +113,14 @@ fun MyTopAppBar(){
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun tabs(innerPadding: PaddingValues) {
+fun Tabs(innerPadding: PaddingValues) {
     val titles = listOf("Chats", "Pause/Start", "Smile")
-    val pagerState = rememberPagerState()
+    var pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        titles.size
+    }
     val courtine = rememberCoroutineScope()
 
     Column {
@@ -126,7 +144,7 @@ fun tabs(innerPadding: PaddingValues) {
                 )
             }
         }
-        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxWidth(),pageCount = titles.size) { page ->
+        HorizontalPager(state = pagerState) { page ->
         when (page) {
                 0 -> chats()
                 1 -> AnimatedPausePlayIcon()

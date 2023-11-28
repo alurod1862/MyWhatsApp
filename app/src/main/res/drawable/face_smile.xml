@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:height="350dp"
+    android:width="350dp"
+    android:viewportHeight="100"
+    android:viewportWidth="100" >
+  
+    <path
+        android:fillColor="@color/yellow"
+        android:pathData="M 50,50
+    m -48,0
+    a 48,48 0 1,0 96,0
+    a 48,48 0 1,0 -96,0"/>
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData=" M 35,40
+    m -7,0
+    a 7,7 0 1,0 14,0
+    a 7,7 0 1,0 -14,0"/>
+    <path
+        android:fillColor="@android:color/black"
+        android:pathData=" M 65,40
+    m -7,0
+    a 7,7 0 1,0 14,0
+    a 7,7 0 1,0 -14,0"/>
+    <path
+        android:name="mouth"
+        android:strokeColor="@android:color/black"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData=" M 30,75
+    Q 50,55 70,75"/>
+    
+</vector>
